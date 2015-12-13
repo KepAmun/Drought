@@ -4,10 +4,15 @@ using System;
 
 public class GameBoard : MonoBehaviour
 {
+    public struct Coords { public int x, y; }
+
     public const int BOARD_WIDTH = 6;
     public const int BOARD_HEIGHT = 6;
 
-    public GameObject TilePrefab;
+    public GameObject DesertPrefab;
+    public GameObject WaterPrefab;
+    public GameObject MudPrefab;
+    public GameObject GrassPrefab;
 
     Tile[,] _map = new Tile[BOARD_WIDTH, BOARD_HEIGHT];
 
@@ -17,9 +22,8 @@ public class GameBoard : MonoBehaviour
         {
             for(int x = 0; x < BOARD_WIDTH; x++)
             {
-                GameObject tileHost = Instantiate<GameObject>(TilePrefab);
-                tileHost.transform.parent = transform;
-                tileHost.transform.position = CoordsToPosition(x, y) + Vector3.forward;
+                GameObject tileHost = Instantiate<GameObject>(DesertPrefab);
+                PlaceTile(tileHost.GetComponent<Tile>(), new Coords() { x = x, y = y });
 
             }
         }
@@ -28,18 +32,24 @@ public class GameBoard : MonoBehaviour
 
     public bool PlaceTile(Tile tile)
     {
-        return PlaceTile(tile, Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.y));
+        Coords coords = PositionToCoords(tile.transform.position);
+
+        return PlaceTile(tile, coords);
     }
 
 
-    public bool PlaceTile(Tile tile, int x, int y)
+    public bool PlaceTile(Tile tile, Coords coords)
     {
         bool success = false;
 
-        if(x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT && _map[x, y] == null)
+        if(coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT)
         {
-            _map[x, y] = tile;
-            tile.transform.position = new Vector3(x, y, 0);
+            if(_map[coords.x, coords.y] != null)
+                Destroy(_map[coords.x, coords.y].gameObject);
+
+            _map[coords.x, coords.y] = tile;
+            tile.transform.SetParent(transform);
+            tile.transform.position = CoordsToPosition(coords);
             tile.GameBoard = this;
             success = true;
         }
@@ -48,9 +58,15 @@ public class GameBoard : MonoBehaviour
     }
 
 
-    Vector3 CoordsToPosition(int x, int y)
+    Vector3 CoordsToPosition(Coords coords)
     {
-        return new Vector2(x, y);
+        return new Vector3(coords.x - 2.5f, 0, coords.y - 2.5f);
+    }
+
+
+    Coords PositionToCoords(Vector3 position)
+    {
+        return new Coords { x = Mathf.RoundToInt(position.x + 2.5f), y = Mathf.RoundToInt(position.z + 2.5f) };
     }
 
 

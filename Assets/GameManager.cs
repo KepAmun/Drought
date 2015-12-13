@@ -21,22 +21,24 @@ public class GameManager : MonoBehaviour
         _handHost = GameObject.Find("Hand");
 
         _hand = new List<Tile>();
+
+        GameObject[] testHand = new GameObject[3];
+        testHand[0] = _gameBoard.MudPrefab;
+        testHand[1] = _gameBoard.GrassPrefab;
+        testHand[2] = _gameBoard.WaterPrefab;
+
         for(int i = 0; i < _handLimit; i++)
         {
-            GameObject tileHost = Instantiate<GameObject>(_gameBoard.TilePrefab);
+            GameObject tileHost = Instantiate<GameObject>(testHand[i]);
             tileHost.transform.position = _handHost.transform.GetChild(i).transform.position;
+            tileHost.transform.SetParent(_handHost.transform);
             Tile tile = tileHost.GetComponent<Tile>();
+            tile.Locked = false;
             _hand.Add(tile);
             tile.MouseDown += OnTileStartDrag;
         }
     }
-
-
-    void Start()
-    {
-
-    }
-
+    
 
     public void OnTileStartDrag(Tile tile)
     {
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
                 
                 if(Physics.Raycast(mouseRay, out hitInfo, 1000, LayerMask.GetMask("GameBoard")))
                 {
-                    tile.transform.position = hitInfo.point + (Vector3.back * 1.0f);
+                    tile.transform.position = hitInfo.point + (Vector3.up * 0.5f);
                 }
 
             }
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour
         {
             _hand.Remove(tile);
             _state = GameState.Advancing;
+            tile.Locked = true;
         }
         else
         {
