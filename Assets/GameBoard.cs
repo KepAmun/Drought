@@ -44,7 +44,7 @@ public class GameBoard : MonoBehaviour
     {
         foreach(Tile tile in _map)
         {
-            Destroy(tile.gameObject);
+            tile.Remove();
         }
 
         Start();
@@ -83,7 +83,7 @@ public class GameBoard : MonoBehaviour
         if(coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT)
         {
             if(_map[coords.x, coords.y] != null)
-                Destroy(_map[coords.x, coords.y].gameObject);
+                _map[coords.x, coords.y].Remove();
 
             _map[coords.x, coords.y] = tile;
             tile.transform.SetParent(transform);

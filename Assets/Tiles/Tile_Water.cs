@@ -17,8 +17,6 @@ public class Tile_Water : Tile
     {
         base.Advance();
 
-        Vector3 mudOffset = new Vector3(0, -0.6f, 0);
-
         List<Tile> neighbors = GameBoard.GetNeighbors(this);
 
         for(int i = 0; i < neighbors.Count; i++)

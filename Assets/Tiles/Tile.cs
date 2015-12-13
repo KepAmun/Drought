@@ -161,4 +161,12 @@ public class Tile : MonoBehaviour
     {
         
     }
+
+
+    public void Remove()
+    {
+        MoveTo(transform.position + (Vector3.down * 0.5f));
+        Destroy(gameObject, 2);
+    }
+    
 }

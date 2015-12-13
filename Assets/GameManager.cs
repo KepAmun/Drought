@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
     {
         for(int i = 0; i < _hand.Count; i++)
         {
-            Destroy(_hand[i].gameObject);
+            _hand[i].Remove();
         }
 
         _hand.Clear();
