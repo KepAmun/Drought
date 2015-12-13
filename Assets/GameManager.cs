@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    enum GameState { Starting, Waiting, Advancing, GameOver, }
-    GameState _state = GameState.Starting;
-
     GameBoard _gameBoard;
     int _food;
 
@@ -13,6 +10,46 @@ public class GameManager : MonoBehaviour
     List<Tile> _hand;
     int _handLimit = 3;
     GameObject _handHost;
+
+    enum GameState { Starting, Waiting, Advancing, GameOver, }
+    GameState _state = GameState.Starting;
+    private GameState State
+    {
+        get
+        {
+            return _state;
+        }
+
+        set
+        {
+            if(_state != value)
+            {
+                _state = value;
+
+                switch(_state)
+                {
+                    case GameState.Starting:
+                        break;
+                    case GameState.Waiting:
+                        for(int i = 0; i < _hand.Count; i++)
+                        {
+                            _hand[i].Locked = false;
+                        }
+                        break;
+                    case GameState.Advancing:
+                        for(int i = 0; i < _hand.Count; i++)
+                        {
+                            _hand[i].Locked = true;
+                        }
+                        break;
+                    case GameState.GameOver:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
 
     void Awake()
@@ -29,63 +66,21 @@ public class GameManager : MonoBehaviour
     {
         ResetHand();
 
-        _state = GameState.Waiting;
+        State = GameState.Waiting;
     }
 
 
-    public void OnTileStartDrag(Tile tile)
+    public void OnHandTileActivated(Tile tile)
     {
-        if(_state == GameState.Waiting)
-        {
-            StartCoroutine(DoDrag(tile));
-        }
-    }
-
-
-    System.Collections.IEnumerator DoDrag(Tile tile)
-    {
-        bool dragging = true;
-
-        Vector3 startingPos = tile.transform.position;
-
-        while(dragging)
-        {
-            if(Input.GetMouseButtonUp(0))
-            {
-                dragging = false;
-            }
-            else
-            {
-                RaycastHit hitInfo;
-                Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                
-                if(Physics.Raycast(mouseRay, out hitInfo, 1000, LayerMask.GetMask("GameBoard")))
-                {
-                    tile.transform.position = hitInfo.point + (Vector3.up * 0.5f);
-                }
-
-            }
-
-            yield return null;
-        }
-
-        if(_gameBoard.PlaceTile(tile))
-        {
-            _hand.Remove(tile);
-            tile.Locked = true;
-            Advance();
-        }
-        else
-        {
-            tile.transform.position = startingPos;
-        }
-
+        tile.Activated -= OnHandTileActivated;
+        _hand.Remove(tile);
+        Advance();
     }
 
 
     void Advance()
     {
-        _state = GameState.Advancing;
+        State = GameState.Advancing;
 
         StartCoroutine(DoAdvance());
     }
@@ -99,7 +94,7 @@ public class GameManager : MonoBehaviour
 
         ResetHand();
 
-        _state = GameState.Waiting;
+        State = GameState.Waiting;
     }
 
 
@@ -115,9 +110,11 @@ public class GameManager : MonoBehaviour
         for(int i = 0; i < _handLimit; i++)
         {
             Tile tile = RandomTile();
-            tile.transform.position = _handHost.transform.GetChild(i).transform.position;
+            Vector3 targetPosition = _handHost.transform.GetChild(i).transform.position;
+            tile.transform.position = targetPosition + Vector3.back * 10;
+            tile.MoveTo(targetPosition, 0.2f * i);
             tile.transform.SetParent(_handHost.transform);
-            tile.MouseDown += OnTileStartDrag;
+            tile.Activated += OnHandTileActivated;
             tile.Locked = false;
 
             _hand.Add(tile);

@@ -1,20 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile_Water : Tile
+public class MudTile : Tile
 {
     void Awake()
     {
-        Type = TileType.Water;
+        Type = TileType.Mud;
     }
 
 
     public override void Advance()
     {
         base.Advance();
-
-        Vector3 mudOffset = new Vector3(0, -0.6f, 0);
-
+        /*
         List<Tile> neighbors = GameBoard.GetNeighbors(this);
 
         for(int i = 0; i < neighbors.Count; i++)
@@ -22,10 +20,11 @@ public class Tile_Water : Tile
             if(neighbors[i].Type == TileType.Desert)
             {
                 Tile mudTile = GameBoard.MakeTile(TileType.Mud);
-                mudTile.transform.position = transform.position + mudOffset;
+                mudTile.transform.position = transform.position + Vector3.down;
                 GameBoard.PlaceTile(mudTile, neighbors[i]);
             }
         }
+        */
     }
 
 
@@ -33,7 +32,7 @@ public class Tile_Water : Tile
     {
         bool success = false;
 
-        if(GameBoard.GetTileAt(transform.position).Type != TileType.Water)
+        //if(GameBoard.GetTileAt(transform.position).Type != TileType.Water)
         {
             success = base.Activate();
         }

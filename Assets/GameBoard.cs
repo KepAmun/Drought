@@ -29,15 +29,20 @@ public class GameBoard : MonoBehaviour
             {
                 GameObject tileHost = Instantiate<GameObject>(DesertPrefab);
                 tileHost.SetActive(false);
-                StartCoroutine(PlaceTileDelayed(tileHost.GetComponent<Tile>(), new Coords() { x = x, y = y }, Random.Range(0, 1.0f)));
+
+                Coords targetCoords = new Coords() { x = x, y = y };
+                Vector3 targetPosition = CoordsToPosition(targetCoords);
+                tileHost.transform.position = targetPosition + Vector3.up * 10;
+
+                StartCoroutine(PlaceTileDelayed(tileHost.GetComponent<Tile>(), targetCoords, Random.Range(0, 1.0f)));
             }
         }
     }
 
 
-    public void PlaceTile(Tile.TileType tileType, Tile replaceTile)
+    public void PlaceTile(Tile tile, Tile replaceTile)
     {
-        PlaceTile(tileType, PositionToCoords(replaceTile.transform.position));
+        PlaceTile(tile, PositionToCoords(replaceTile.transform.position));
     }
 
 
@@ -71,9 +76,9 @@ public class GameBoard : MonoBehaviour
 
             _map[coords.x, coords.y] = tile;
             tile.transform.SetParent(transform);
-            tile.transform.position = CoordsToPosition(coords);
+            tile.MoveTo(CoordsToPosition(coords));
+
             tile.name = tile.name + "(" + coords.x + ", " + coords.y + ")";
-            tile.GameBoard = this;
             success = true;
         }
 
@@ -168,8 +173,21 @@ public class GameBoard : MonoBehaviour
         if(tileHost != null)
         {
             tile = tileHost.GetComponent<Tile>();
+            tile.GameBoard = this;
         }
 
         return tile;
+    }
+
+
+    public Tile GetTileAt(Vector3 position)
+    {
+        return GetTileAt(PositionToCoords(position));
+    }
+
+
+    public Tile GetTileAt(Coords coords)
+    {
+        return _map[coords.x, coords.y];
     }
 }
