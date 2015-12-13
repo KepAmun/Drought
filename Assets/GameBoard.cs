@@ -27,14 +27,14 @@ public class GameBoard : MonoBehaviour
         {
             for(int x = 0; x < BOARD_WIDTH; x++)
             {
-                GameObject tileHost = Instantiate<GameObject>(DesertPrefab);
-                tileHost.SetActive(false);
+                Tile tile = MakeTile(Tile.TileType.Desert);
+                tile.gameObject.SetActive(false);
 
                 Coords targetCoords = new Coords() { x = x, y = y };
                 Vector3 targetPosition = CoordsToPosition(targetCoords);
-                tileHost.transform.position = targetPosition + Vector3.up * 10;
+                tile.transform.position = targetPosition + Vector3.up * 10;
 
-                StartCoroutine(PlaceTileDelayed(tileHost.GetComponent<Tile>(), targetCoords, Random.Range(0, 1.0f)));
+                StartCoroutine(PlaceTileDelayed(tile.GetComponent<Tile>(), targetCoords, Random.Range(0, 1.0f)));
             }
         }
     }
@@ -79,6 +79,7 @@ public class GameBoard : MonoBehaviour
             tile.MoveTo(CoordsToPosition(coords));
 
             tile.name = tile.name + "(" + coords.x + ", " + coords.y + ")";
+            tile.Locked = true;
             success = true;
         }
 
@@ -103,6 +104,11 @@ public class GameBoard : MonoBehaviour
         foreach(Tile tile in _map)
         {
             tile.Advance();
+        }
+        
+        foreach(Tile tile in _map)
+        {
+            tile.CheckHealth();
         }
     }
 
@@ -131,7 +137,7 @@ public class GameBoard : MonoBehaviour
         {
             Coords coords = new Coords() { x = center.x + sides[i].x, y = center.y + sides[i].y };
 
-            if(coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT)
+            if(InRange(coords))
             {
                 neighbors.Add(_map[coords.x, coords.y]);
             }
@@ -188,6 +194,19 @@ public class GameBoard : MonoBehaviour
 
     public Tile GetTileAt(Coords coords)
     {
-        return _map[coords.x, coords.y];
+        Tile tile = null;
+
+        if(InRange(coords))
+        {
+            tile = _map[coords.x, coords.y];
+        }
+
+        return tile;
+    }
+
+
+    bool InRange(Coords coords)
+    {
+        return (coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT);
     }
 }

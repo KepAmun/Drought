@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 public class Tile_Water : Tile
 {
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         Type = TileType.Water;
+
+        Health = 16;
     }
 
 
@@ -19,11 +23,10 @@ public class Tile_Water : Tile
 
         for(int i = 0; i < neighbors.Count; i++)
         {
-            if(neighbors[i].Type == TileType.Desert)
+            if(neighbors[i].Type == TileType.Desert || neighbors[i].Type == TileType.Mud)
             {
-                Tile mudTile = GameBoard.MakeTile(TileType.Mud);
-                mudTile.transform.position = transform.position + mudOffset;
-                GameBoard.PlaceTile(mudTile, neighbors[i]);
+                neighbors[i].Health++;
+                Health--;
             }
         }
     }
@@ -33,11 +36,23 @@ public class Tile_Water : Tile
     {
         bool success = false;
 
-        if(GameBoard.GetTileAt(transform.position).Type != TileType.Water)
+        Tile targetTile = GameBoard.GetTileAt(transform.position);
+        if(targetTile != null && targetTile.Type != TileType.Water)
         {
             success = base.Activate();
         }
 
         return success;
+    }
+
+
+    public override void CheckHealth()
+    {
+        base.CheckHealth();
+
+        if(Health < 0)
+        {
+            ChangeTo(TileType.Grass);
+        }
     }
 }

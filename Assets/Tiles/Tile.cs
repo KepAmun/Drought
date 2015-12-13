@@ -1,18 +1,50 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Tile : MonoBehaviour
 {
-    public enum TileType { Desert, Grass, Mud, Water}
+    public enum TileType { Desert, Grass, Mud, Water }
     public TileType Type { get; protected set; }
 
-    int level = 0;
+    public int Health { get; set; }
+
+    int _level = 0;
+    public int Level
+    {
+        get
+        {
+            return _level;
+        }
+
+        set
+        {
+            if(_level != value)
+            {
+                if(_level > value)
+                {
+                    // Level up tile
+                }
+                else
+                {
+                    // Level up tile
+                }
+
+                _level = value;
+            }
+        }
+    }
 
     public GameBoard GameBoard { get; set; }
     public bool Locked { get; set; }
 
     public event System.Action<Tile> Activated;
-    
+
+    protected virtual void Awake()
+    {
+        Health = 0;
+    }
+
 
     public virtual void Advance()
     {
@@ -50,7 +82,7 @@ public class Tile : MonoBehaviour
 
                 if(Physics.Raycast(mouseRay, out hitInfo, 1000, LayerMask.GetMask("GameBoard")))
                 {
-                    transform.position = hitInfo.point + (Vector3.up * 0.5f);
+                    transform.position = hitInfo.point + (Vector3.up * 0.8f);
                 }
 
             }
@@ -68,17 +100,23 @@ public class Tile : MonoBehaviour
 
     public virtual bool Activate()
     {
-        Locked = true;
+        bool success = GameBoard.PlaceTile(this);
 
-        if(Activated != null)
-            Activated(this);
+        if(success)
+        {
+            Locked = true;
 
-        return GameBoard.PlaceTile(this);
+            if(Activated != null)
+                Activated(this);
+        }
+
+        return success;
     }
 
 
     public void MoveTo(Vector3 targetPosition, float delay = 0)
-    {   
+    {
+        StopAllCoroutines();
         StartCoroutine(DoMoveTo(targetPosition, delay));
     }
 
@@ -96,5 +134,31 @@ public class Tile : MonoBehaviour
         }
 
         transform.position = targetPosition;
+    }
+
+
+    public virtual void CheckHealth()
+    {
+
+    }
+
+
+    protected void ChangeTo(Tile.TileType type)
+    {
+        Tile tile = GameBoard.MakeTile(type);
+        tile.transform.position = transform.position + Vector3.down;
+        GameBoard.PlaceTile(tile, this);
+    }
+
+
+    public virtual void LevelUp()
+    {
+
+    }
+
+
+    public virtual void LevelDown()
+    {
+        
     }
 }

@@ -1,32 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile_Grass : Tile
+public class Tile_Desert : Tile
 {
     protected override void Awake()
     {
         base.Awake();
 
-        Health = 2;
-
-        Type = TileType.Grass;
+        Type = TileType.Desert;
     }
 
-
-    public override void Advance()
-    {
-        base.Advance();
-
-        Health--;
-    }
 
     public override void CheckHealth()
     {
         base.CheckHealth();
 
-        if(Health <= 0)
+        if(Health > 0)
         {
             ChangeTo(TileType.Mud);
         }
+    }
+
+
+    public override void LevelUp()
+    {
+        base.LevelUp();
+    }
+
+
+    public override void LevelDown()
+    {
+        base.LevelDown();
     }
 }

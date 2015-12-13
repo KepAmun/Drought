@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 474628}
-  - 114: {fileID: 11492018}
+  - 114: {fileID: 11464582}
   - 65: {fileID: 6518442}
   - 95: {fileID: 9571702}
   m_Layer: 0
@@ -123,7 +123,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11492018
+--- !u!114 &11464582
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 111836}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c429e1dd98c69fe4b9cdbb7ded576a28, type: 3}
+  m_Script: {fileID: 11500000, guid: 6906d206f85276a4e80488145124b197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &100100000
