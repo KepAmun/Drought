@@ -27,21 +27,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        GameObject[] testHand = new GameObject[3];
-        testHand[0] = _gameBoard.MudPrefab;
-        testHand[1] = _gameBoard.GrassPrefab;
-        testHand[2] = _gameBoard.WaterPrefab;
-
-        for(int i = 0; i < _handLimit; i++)
-        {
-            GameObject tileHost = Instantiate<GameObject>(testHand[i]);
-            tileHost.transform.position = _handHost.transform.GetChild(i).transform.position;
-            tileHost.transform.SetParent(_handHost.transform);
-            Tile tile = tileHost.GetComponent<Tile>();
-            tile.Locked = false;
-            _hand.Add(tile);
-            tile.MouseDown += OnTileStartDrag;
-        }
+        ResetHand();
 
         _state = GameState.Waiting;
     }
@@ -111,7 +97,43 @@ public class GameManager : MonoBehaviour
 
         _gameBoard.Advance();
 
+        ResetHand();
+
         _state = GameState.Waiting;
     }
 
+
+    void ResetHand()
+    {
+        for(int i = 0; i < _hand.Count; i++)
+        {
+            Destroy(_hand[i].gameObject);
+        }
+
+        _hand.Clear();
+        
+        for(int i = 0; i < _handLimit; i++)
+        {
+            Tile tile = RandomTile();
+            tile.transform.position = _handHost.transform.GetChild(i).transform.position;
+            tile.transform.SetParent(_handHost.transform);
+            tile.MouseDown += OnTileStartDrag;
+            tile.Locked = false;
+
+            _hand.Add(tile);
+        }
+
+    }
+
+
+    Tile RandomTile()
+    {
+        Tile tile = null;
+
+        Tile.TileType tileType = (Tile.TileType)(Random.Range(0, System.Enum.GetValues(typeof(Tile.TileType)).Length));
+
+        tile = _gameBoard.MakeTile(tileType);
+
+        return tile;
+    }
 }

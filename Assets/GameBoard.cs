@@ -43,33 +43,11 @@ public class GameBoard : MonoBehaviour
 
     public void PlaceTile(Tile.TileType tileType, Coords coords)
     {
-        GameObject tileHost = null;
+        Tile tile = MakeTile(tileType);
 
-        switch(tileType)
+        if(tile != null)
         {
-            case Tile.TileType.Desert:
-                tileHost = Instantiate<GameObject>(DesertPrefab);
-                break;
-
-            case Tile.TileType.Grass:
-                tileHost = Instantiate<GameObject>(GrassPrefab);
-                break;
-
-            case Tile.TileType.Mud:
-                tileHost = Instantiate<GameObject>(MudPrefab);
-                break;
-
-            case Tile.TileType.Water:
-                tileHost = Instantiate<GameObject>(WaterPrefab);
-                break;
-
-            default:
-                break;
-        }
-
-        if(tileHost != null)
-        {
-            PlaceTile(tileHost.GetComponent<Tile>(), coords);
+            PlaceTile(tile, coords);
         }
     }
 
@@ -156,5 +134,42 @@ public class GameBoard : MonoBehaviour
 
 
         return neighbors;
+    }
+    
+
+    public Tile MakeTile(Tile.TileType tileType)
+    {
+        Tile tile = null;
+        GameObject tileHost = null;
+
+        switch(tileType)
+        {
+            case Tile.TileType.Desert:
+                tileHost = Instantiate<GameObject>(DesertPrefab);
+                break;
+
+            case Tile.TileType.Grass:
+                tileHost = Instantiate<GameObject>(GrassPrefab);
+                break;
+
+            case Tile.TileType.Mud:
+                tileHost = Instantiate<GameObject>(MudPrefab);
+                break;
+
+            case Tile.TileType.Water:
+                tileHost = Instantiate<GameObject>(WaterPrefab);
+                break;
+
+            default:
+                break;
+        }
+
+
+        if(tileHost != null)
+        {
+            tile = tileHost.GetComponent<Tile>();
+        }
+
+        return tile;
     }
 }
