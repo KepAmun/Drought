@@ -1,10 +1,42 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     GameBoard _gameBoard;
+
+    // UI
     int _food;
+    public int Food
+    {
+        get
+        {
+            return _food;
+        }
+
+        set
+        {
+            _food = value;
+            FoodText.text = _food.ToString();
+
+            if(_food == 0)
+            {
+                FoodText.color = Color.red;
+            }
+            else if(_food < 0)
+            {
+                State = GameState.GameOver;
+                FoodText.text = string.Empty;
+            }
+            else
+            {
+                FoodText.color = Color.white;
+            }
+        }
+    }
+    Text FoodText;
+    GameObject GameOverPanel;
 
     // Hand of tiles
     List<Tile> _hand;
@@ -24,6 +56,25 @@ public class GameManager : MonoBehaviour
         {
             if(_state != value)
             {
+                switch(_state)
+                {
+                    case GameState.Starting:
+                        break;
+                    case GameState.Waiting:
+                        for(int i = 0; i < _hand.Count; i++)
+                        {
+                            _hand[i].Locked = true;
+                        }
+                        break;
+                    case GameState.Advancing:
+                        break;
+                    case GameState.GameOver:
+                        GameOverPanel.SetActive(false);
+                        break;
+                    default:
+                        break;
+                }
+
                 _state = value;
 
                 switch(_state)
@@ -37,12 +88,10 @@ public class GameManager : MonoBehaviour
                         }
                         break;
                     case GameState.Advancing:
-                        for(int i = 0; i < _hand.Count; i++)
-                        {
-                            _hand[i].Locked = true;
-                        }
                         break;
                     case GameState.GameOver:
+                        GameOverPanel.SetActive(true);
+                        ClearHand();
                         break;
                     default:
                         break;
@@ -59,11 +108,16 @@ public class GameManager : MonoBehaviour
 
         _hand = new List<Tile>();
 
+        FoodText = GameObject.Find("FoodLabel").GetComponent<Text>();
+        GameOverPanel = GameObject.Find("GameOverPanel");
+        GameOverPanel.SetActive(false);
     }
 
 
     void Start()
     {
+        Food = 20;
+
         ResetHand();
 
         State = GameState.Waiting;
@@ -88,24 +142,26 @@ public class GameManager : MonoBehaviour
 
     System.Collections.IEnumerator DoAdvance()
     {
-        yield return new WaitForSeconds(0.2f);
-
+        yield return new WaitForSeconds(0.4f);
+        
         _gameBoard.Advance();
 
-        ResetHand();
+        yield return new WaitForSeconds(0.4f);
 
-        State = GameState.Waiting;
+        Food--;
+
+        if(State != GameState.GameOver)
+        {
+            ResetHand();
+
+            State = GameState.Waiting;
+        }
     }
 
 
     void ResetHand()
     {
-        for(int i = 0; i < _hand.Count; i++)
-        {
-            Destroy(_hand[i].gameObject);
-        }
-
-        _hand.Clear();
+        ClearHand();
         
         for(int i = 0; i < _handLimit; i++)
         {
@@ -123,6 +179,17 @@ public class GameManager : MonoBehaviour
     }
 
 
+    void ClearHand()
+    {
+        for(int i = 0; i < _hand.Count; i++)
+        {
+            Destroy(_hand[i].gameObject);
+        }
+
+        _hand.Clear();
+    }
+
+
     Tile RandomTile()
     {
         Tile tile = null;
@@ -132,5 +199,12 @@ public class GameManager : MonoBehaviour
         tile = _gameBoard.MakeTile(tileType);
 
         return tile;
+    }
+
+
+    public void OnRestartClicked()
+    {
+        Start();
+        _gameBoard.Restart();
     }
 }

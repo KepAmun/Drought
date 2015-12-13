@@ -40,6 +40,17 @@ public class GameBoard : MonoBehaviour
     }
 
 
+    public void Restart()
+    {
+        foreach(Tile tile in _map)
+        {
+            Destroy(tile.gameObject);
+        }
+
+        Start();
+    }
+
+
     public void PlaceTile(Tile tile, Tile replaceTile)
     {
         PlaceTile(tile, PositionToCoords(replaceTile.transform.position));
