@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
+using System.Collections.Generic;
 
 public class GameBoard : MonoBehaviour
 {
@@ -18,14 +17,59 @@ public class GameBoard : MonoBehaviour
 
     void Awake()
     {
+
+    }
+
+
+    void Start()
+    {
         for(int y = 0; y < BOARD_HEIGHT; y++)
         {
             for(int x = 0; x < BOARD_WIDTH; x++)
             {
                 GameObject tileHost = Instantiate<GameObject>(DesertPrefab);
-                PlaceTile(tileHost.GetComponent<Tile>(), new Coords() { x = x, y = y });
-
+                tileHost.SetActive(false);
+                StartCoroutine(PlaceTileDelayed(tileHost.GetComponent<Tile>(), new Coords() { x = x, y = y }, Random.Range(0, 1.0f)));
             }
+        }
+    }
+
+
+    public void PlaceTile(Tile.TileType tileType, Tile replaceTile)
+    {
+        PlaceTile(tileType, PositionToCoords(replaceTile.transform.position));
+    }
+
+
+    public void PlaceTile(Tile.TileType tileType, Coords coords)
+    {
+        GameObject tileHost = null;
+
+        switch(tileType)
+        {
+            case Tile.TileType.Desert:
+                tileHost = Instantiate<GameObject>(DesertPrefab);
+                break;
+
+            case Tile.TileType.Grass:
+                tileHost = Instantiate<GameObject>(GrassPrefab);
+                break;
+
+            case Tile.TileType.Mud:
+                tileHost = Instantiate<GameObject>(MudPrefab);
+                break;
+
+            case Tile.TileType.Water:
+                tileHost = Instantiate<GameObject>(WaterPrefab);
+                break;
+
+            default:
+                break;
+        }
+
+        if(tileHost != null)
+        {
+            PlaceTile(tileHost.GetComponent<Tile>(), coords);
         }
     }
 
@@ -50,6 +94,7 @@ public class GameBoard : MonoBehaviour
             _map[coords.x, coords.y] = tile;
             tile.transform.SetParent(transform);
             tile.transform.position = CoordsToPosition(coords);
+            tile.name = tile.name + "(" + coords.x + ", " + coords.y + ")";
             tile.GameBoard = this;
             success = true;
         }
@@ -76,5 +121,40 @@ public class GameBoard : MonoBehaviour
         {
             tile.Advance();
         }
+    }
+
+
+    System.Collections.IEnumerator PlaceTileDelayed(Tile tile, Coords coords, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        tile.gameObject.SetActive(true);
+        PlaceTile(tile, coords);
+    }
+
+
+    public List<Tile> GetNeighbors(Tile tile)
+    {
+        List<Tile> neighbors = new List<Tile>();
+
+        Coords center = PositionToCoords(tile.transform.position);
+
+        Coords[] sides = new Coords[4];
+        sides[0] = new Coords() { x = -1, y = 0 };
+        sides[1] = new Coords() { x = 0, y = 1 };
+        sides[2] = new Coords() { x = 1, y = 0 };
+        sides[3] = new Coords() { x = 0, y = -1 };
+
+        for(int i = 0; i < 4; i++)
+        {
+            Coords coords = new Coords() { x = center.x + sides[i].x, y = center.y + sides[i].y };
+
+            if(coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT)
+            {
+                neighbors.Add(_map[coords.x, coords.y]);
+            }
+        }
+
+
+        return neighbors;
     }
 }

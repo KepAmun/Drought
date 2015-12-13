@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
 
         _hand = new List<Tile>();
 
+    }
+
+
+    void Start()
+    {
         GameObject[] testHand = new GameObject[3];
         testHand[0] = _gameBoard.MudPrefab;
         testHand[1] = _gameBoard.GrassPrefab;
@@ -37,12 +42,17 @@ public class GameManager : MonoBehaviour
             _hand.Add(tile);
             tile.MouseDown += OnTileStartDrag;
         }
+
+        _state = GameState.Waiting;
     }
-    
+
 
     public void OnTileStartDrag(Tile tile)
     {
-        StartCoroutine(DoDrag(tile));
+        if(_state == GameState.Waiting)
+        {
+            StartCoroutine(DoDrag(tile));
+        }
     }
 
 
@@ -76,8 +86,8 @@ public class GameManager : MonoBehaviour
         if(_gameBoard.PlaceTile(tile))
         {
             _hand.Remove(tile);
-            _state = GameState.Advancing;
             tile.Locked = true;
+            Advance();
         }
         else
         {
@@ -89,8 +99,19 @@ public class GameManager : MonoBehaviour
 
     void Advance()
     {
-        _gameBoard.Advance();
+        _state = GameState.Advancing;
+
+        StartCoroutine(DoAdvance());
     }
 
+
+    System.Collections.IEnumerator DoAdvance()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        _gameBoard.Advance();
+
+        _state = GameState.Waiting;
+    }
 
 }

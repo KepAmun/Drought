@@ -3,22 +3,19 @@ using System.Collections;
 
 public class Tile : MonoBehaviour
 {
+    public enum TileType { Desert, Grass, Mud, Water}
+    public TileType Type { get; protected set; }
+
     int level = 0;
 
     public GameBoard GameBoard { get; set; }
     public bool Locked { get; set; }
 
     public event System.Action<Tile> MouseDown;
+    
 
-    void Start()
+    public virtual void Advance()
     {
-
-    }
-
-
-    public void Advance()
-    {
-        Debug.Log("Advancing: " + (int)(transform.position.x) + ", " + (int)(transform.position.y));
     }
 
 
