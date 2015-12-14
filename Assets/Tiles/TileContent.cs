@@ -9,4 +9,10 @@ public class TileContent : MonoBehaviour
     {
 
     }
+
+
+    public virtual void CheckHealth()
+    {
+
+    }
 }

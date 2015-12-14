@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
 public class Tile : MonoBehaviour
 {
@@ -116,12 +115,6 @@ public class Tile : MonoBehaviour
     }
 
 
-    public virtual void CheckHealth()
-    {
-
-    }
-
-
     protected TerrainTile ChangeTo(Tile.TileType type)
     {
         TerrainTile tile = GameBoard.MakeTile(type) as TerrainTile;
@@ -134,7 +127,11 @@ public class Tile : MonoBehaviour
 
     public void Remove()
     {
-        MoveTo(transform.position + (Vector3.down * 0.5f));
+        Vector3 targetPosition = transform.position;
+        targetPosition.y = -1;
+
+        MoveTo(targetPosition);
+
         Destroy(gameObject, 2);
     }
     

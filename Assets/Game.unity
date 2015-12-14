@@ -963,6 +963,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GroundPrefab: {fileID: 111836, guid: 74d31f4e57eb0da4996453113e820a54, type: 2}
   WaterPrefab: {fileID: 169974, guid: b613a0352f8b339409fbf38ef386b2b7, type: 2}
+  SeedPrefab: {fileID: 159416, guid: 6224ebfac2c82864a917d56ac0dacc9e, type: 2}
+  SunPrefab: {fileID: 155302, guid: ae31213e5a101f44c9e60949acc94219, type: 2}
 --- !u!4 &1624311134
 Transform:
   m_ObjectHideFlags: 0

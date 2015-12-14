@@ -123,6 +123,16 @@ public class GameManager : MonoBehaviour
         {
             _tileTypeDistribution.Add(Tile.TileType.Water);
         }
+
+        for(int i = 0; i < 10; i++)
+        {
+            _tileTypeDistribution.Add(Tile.TileType.Seed);
+        }
+
+        for(int i = 0; i < 10; i++)
+        {
+            _tileTypeDistribution.Add(Tile.TileType.Sun);
+        }
     }
 
 

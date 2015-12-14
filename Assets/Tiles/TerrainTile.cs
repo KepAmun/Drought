@@ -66,6 +66,21 @@ public class TerrainTile : Tile
     
     public virtual void Advance()
     {
+        Health--;
+
+        if(Content != null)
+        {
+            Content.Advance();
+        }
+    }
+
+
+    public virtual void CheckHealth()
+    {
+        if(Content != null)
+        {
+            Content.CheckHealth();
+        }
     }
 
 }

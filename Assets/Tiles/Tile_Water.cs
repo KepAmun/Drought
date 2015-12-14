@@ -9,24 +9,7 @@ public class Tile_Water : TerrainTile
 
         Type = TileType.Water;
 
-        Health = 32;
-    }
-
-
-    public override void Advance()
-    {
-        base.Advance();
-
-        List<TerrainTile> neighbors = GameBoard.GetNeighbors(this);
-
-        for(int i = 0; i < neighbors.Count; i++)
-        {
-            if(neighbors[i].Type == TileType.Ground)
-            {
-                neighbors[i].Health += 2;
-                Health -= 2;
-            }
-        }
+        Health = 100;
     }
 
 

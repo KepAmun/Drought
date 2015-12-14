@@ -14,7 +14,18 @@ public class GroundTile : TerrainTile
     {
         base.Advance();
 
-        Health--;
+        List<TerrainTile> neighbors = GameBoard.GetNeighbors(this);
+
+        for(int i = 0; i < neighbors.Count; i++)
+        {
+            if(neighbors[i].Type == TileType.Water && neighbors[i].Health > Health)
+            {
+                int healthDrain = Mathf.Min(neighbors[i].Health, 4);
+
+                neighbors[i].Health -= healthDrain;
+                Health += healthDrain;
+            }
+        }
     }
 
     public override void CheckHealth()

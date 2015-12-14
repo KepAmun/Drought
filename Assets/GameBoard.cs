@@ -10,6 +10,8 @@ public class GameBoard : MonoBehaviour
 
     public GameObject GroundPrefab;
     public GameObject WaterPrefab;
+    public GameObject SeedPrefab;
+    public GameObject SunPrefab;
 
     TerrainTile[,] _map = new TerrainTile[BOARD_WIDTH, BOARD_HEIGHT];
 
@@ -25,7 +27,9 @@ public class GameBoard : MonoBehaviour
         {
             for(int x = 0; x < BOARD_WIDTH; x++)
             {
-                Tile tile = MakeTile(Tile.TileType.Ground);
+                TerrainTile tile = MakeTile(Tile.TileType.Ground) as TerrainTile;
+                tile.Health = Random.Range(0, 8);
+                tile.CheckHealth();
                 tile.gameObject.SetActive(false);
 
                 Coords targetCoords = new Coords() { x = x, y = y };
@@ -93,6 +97,10 @@ public class GameBoard : MonoBehaviour
 
                 tile.name = tile.name + "(" + coords.x + ", " + coords.y + ")";
                 tile.Locked = true;
+            }
+            else
+            {
+                tile.Remove();
             }
 
         }
@@ -172,11 +180,18 @@ public class GameBoard : MonoBehaviour
             case Tile.TileType.Ground:
                 tileHost = Instantiate<GameObject>(GroundPrefab);
                 break;
-
             case Tile.TileType.Water:
                 tileHost = Instantiate<GameObject>(WaterPrefab);
                 break;
-
+            case Tile.TileType.Seed:
+                tileHost = Instantiate<GameObject>(SeedPrefab);
+                break;
+            case Tile.TileType.Sun:
+                tileHost = Instantiate<GameObject>(SunPrefab);
+                break;
+            case Tile.TileType.Fish:
+                //tileHost = Instantiate<GameObject>(FishPrefab);
+                break;
             default:
                 break;
         }
