@@ -113,7 +113,6 @@ public class Tile : MonoBehaviour
 
         if(!Activate())
         {
-            LightOn = true;
             MoveTo(startingPos);
         }
         else if(_audio != null)
