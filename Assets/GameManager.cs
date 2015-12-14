@@ -37,6 +37,27 @@ public class GameManager : MonoBehaviour
         }
     }
     Text FoodText;
+
+    int _turnNumber;
+    public int TurnNumber
+    {
+        get
+        {
+            return _turnNumber;
+        }
+
+        set
+        {
+            if(_turnNumber != value)
+            {
+                _turnNumber = value;
+
+                TimeText.text = _turnNumber.ToString();
+            }
+        }
+    }
+
+    Text TimeText;
     GameObject GameOverPanel;
 
     // Hand of tiles
@@ -121,6 +142,8 @@ public class GameManager : MonoBehaviour
         _hand = new List<Tile>();
 
         FoodText = GameObject.Find("FoodLabel").GetComponent<Text>();
+        TimeText = GameObject.Find("TimeLabel").GetComponent<Text>();
+        TurnNumber = 0;
         GameOverPanel = GameObject.Find("GameOverPanel");
         GameOverPanel.SetActive(false);
 
@@ -194,6 +217,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
 
         Food--;
+        TurnNumber++;
 
         if(State != GameState.GameOver)
         {
