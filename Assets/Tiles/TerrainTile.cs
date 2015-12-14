@@ -39,7 +39,10 @@ public class TerrainTile : Tile
         {
             _content = value;
 
-            _content.ContainingTile = this;
+            if(_content != null)
+            {
+                _content.ContainingTile = this;
+            }
         }
     }
 

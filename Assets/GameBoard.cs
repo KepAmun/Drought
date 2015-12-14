@@ -82,7 +82,7 @@ public class GameBoard : MonoBehaviour
     {
         bool success = false;
 
-        if(coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT)
+        if(InRange(coords))
         {
             success = true;
 

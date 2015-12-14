@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     GameBoard _gameBoard;
+    Tile_Harvest _harvestTile;
 
     // UI
     int _food;
@@ -106,6 +107,9 @@ public class GameManager : MonoBehaviour
     {
         _gameBoard = Transform.FindObjectOfType<GameBoard>();
         _handHost = GameObject.Find("Hand");
+        _harvestTile = _handHost.transform.GetComponentInChildren<Tile_Harvest>();
+        _harvestTile.GameBoard = _gameBoard;
+        _harvestTile.TileContentHarvested += _harvestTile_TileContentHarvested;
 
         _hand = new List<Tile>();
 
@@ -133,6 +137,12 @@ public class GameManager : MonoBehaviour
         {
             _tileTypeDistribution.Add(Tile.TileType.Sun);
         }
+    }
+
+
+    private void _harvestTile_TileContentHarvested(TileContent tileContent)
+    {
+        Food += tileContent.Health;
     }
 
 

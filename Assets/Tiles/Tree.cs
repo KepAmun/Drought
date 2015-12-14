@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Tree : TileContent
 {
-    public int Health { get; set; }
-
     GameObject[] _leaves;
 
     void Awake()
