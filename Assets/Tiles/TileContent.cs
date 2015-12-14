@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TileContent : MonoBehaviour
+public abstract class TileContent : MonoBehaviour
 {
-    public int Health { get; set; }
     public TerrainTile ContainingTile { get; set; }
+
+    public int Health { get; set; }
+    public int MaxHealth { get; protected set; }
+    public abstract int Level { get; set; }
 
     public virtual void Advance()
     {
