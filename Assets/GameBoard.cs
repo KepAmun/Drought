@@ -98,7 +98,7 @@ public class GameBoard : MonoBehaviour
                 tile.name = tile.name + "(" + coords.x + ", " + coords.y + ")";
                 tile.Locked = true;
             }
-            else
+            else if(!(tile is Tile_Harvest))
             {
                 tile.Remove();
             }

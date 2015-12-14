@@ -31,11 +31,8 @@ public class Tile : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(!Locked)
-        {
-            StopAllCoroutines();
-            StartCoroutine(DoDrag());
-        }
+        StopAllCoroutines();
+        StartCoroutine(DoDrag());
     }
 
 

@@ -32,6 +32,8 @@ public class Tile_Harvest : Tile
             success = true;
 
             MoveTo(_startingPosition);
+
+            base.Activate();
         }
 
         return success;

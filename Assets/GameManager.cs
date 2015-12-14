@@ -67,6 +67,9 @@ public class GameManager : MonoBehaviour
                         {
                             _hand[i].Locked = true;
                         }
+
+                        _harvestTile.Locked = true;
+
                         break;
                     case GameState.Advancing:
                         break;
@@ -88,6 +91,9 @@ public class GameManager : MonoBehaviour
                         {
                             _hand[i].Locked = false;
                         }
+
+                        _harvestTile.Locked = false;
+
                         break;
                     case GameState.Advancing:
                         break;
@@ -109,7 +115,8 @@ public class GameManager : MonoBehaviour
         _handHost = GameObject.Find("Hand");
         _harvestTile = _handHost.transform.GetComponentInChildren<Tile_Harvest>();
         _harvestTile.GameBoard = _gameBoard;
-        _harvestTile.TileContentHarvested += _harvestTile_TileContentHarvested;
+        _harvestTile.TileContentHarvested += OnTileContentHarvested;
+        _harvestTile.Activated += OnHarvestTileActivated;
 
         _hand = new List<Tile>();
 
@@ -140,12 +147,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void _harvestTile_TileContentHarvested(TileContent tileContent)
-    {
-        Food += tileContent.Health;
-    }
-
-
     void Start()
     {
         Food = 20;
@@ -161,6 +162,18 @@ public class GameManager : MonoBehaviour
         tile.Activated -= OnHandTileActivated;
         _hand.Remove(tile);
         Advance();
+    }
+
+
+    private void OnHarvestTileActivated(Tile obj)
+    {
+        Advance();
+    }
+
+
+    private void OnTileContentHarvested(TileContent tileContent)
+    {
+        Food += tileContent.Health;
     }
 
 
