@@ -23,9 +23,12 @@ public class Tile : MonoBehaviour
 
     public event System.Action<Tile> Activated;
 
+    AudioSource _audio;
+
     protected virtual void Awake()
     {
         _collider = GetComponent<Collider>();
+        _audio = GetComponent<AudioSource>();
     }
 
 
@@ -68,6 +71,10 @@ public class Tile : MonoBehaviour
         if(!Activate())
         {
             MoveTo(startingPos);
+        }
+        else if(_audio != null)
+        {
+            _audio.Play();
         }
 
     }
