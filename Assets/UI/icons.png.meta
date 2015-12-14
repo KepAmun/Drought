@@ -1,0 +1,254 @@
+fileFormatVersion: 2
+guid: 1264fcf832489ec49b1d21c202013a10
+timeCreated: 1450057949
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: 0_food
+    21300002: 1_winter
+    21300004: 2_time
+    21300006: 3_summer
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: 0_food
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 22, y: 64}
+        - {x: 13, y: 64}
+        - {x: -25, y: 50}
+        - {x: -28, y: 33}
+        - {x: -28, y: -64}
+        - {x: -14, y: -64}
+        - {x: 22, y: -31}
+        - {x: 26, y: -3}
+        - {x: 26, y: 57}
+    - name: 1_winter
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: -43}
+        - {x: 13, y: -49}
+        - {x: 22, y: -56}
+        - {x: 57, y: -34}
+        - {x: 57, y: -25}
+        - {x: 53, y: -13}
+        - {x: 46, y: -13}
+        - {x: 49, y: -10}
+        - {x: 53, y: -4}
+        - {x: 57, y: 6}
+        - {x: 57, y: 34}
+        - {x: 55, y: 35}
+        - {x: 41, y: 36}
+        - {x: 28, y: 42}
+        - {x: 11, y: 34}
+        - {x: 3, y: 30}
+        - {x: 5, y: 31}
+        - {x: 7, y: 33}
+        - {x: 8, y: 33}
+        - {x: 11, y: 35}
+        - {x: 20, y: 42}
+        - {x: 20, y: 47}
+        - {x: 18, y: 49}
+        - {x: 14, y: 48}
+        - {x: 13, y: 53}
+        - {x: 11, y: 57}
+        - {x: 5, y: 64}
+        - {x: -4, y: 64}
+        - {x: -7, y: 61}
+        - {x: -18, y: 54}
+        - {x: -23, y: 45}
+        - {x: -45, y: 49}
+        - {x: -61, y: 38}
+        - {x: -61, y: -45}
+        - {x: -36, y: -64}
+        - {x: 8, y: -64}
+        - {x: 13, y: -54}
+        - {x: 13, y: -50}
+        - {x: 11, y: -47}
+    - name: 2_time
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -42, y: 57}
+        - {x: -58, y: 32}
+        - {x: -58, y: -46}
+        - {x: -25, y: -57}
+        - {x: 31, y: -57}
+        - {x: 56, y: -32}
+        - {x: 56, y: 41}
+        - {x: 18, y: 57}
+      - - {x: -41, y: 5}
+        - {x: 7, y: 40}
+        - {x: 39, y: 9}
+        - {x: 31, y: -26}
+      - - {x: 7, y: 39}
+        - {x: -7, y: 39}
+        - {x: -9, y: 30}
+        - {x: -9, y: -10}
+        - {x: -6, y: -14}
+        - {x: 13, y: -21}
+        - {x: 24, y: -21}
+        - {x: 25, y: -19}
+        - {x: 25, y: -8}
+        - {x: 23, y: -7}
+    - name: 3_summer
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: -39}
+        - {x: -7, y: -44}
+        - {x: -7, y: -61}
+        - {x: -5, y: -63}
+        - {x: 4, y: -63}
+        - {x: 7, y: -62}
+        - {x: 7, y: -43}
+        - {x: 6, y: -39}
+      - - {x: -34, y: -25}
+        - {x: -46, y: -37}
+        - {x: -46, y: -42}
+        - {x: -41, y: -47}
+        - {x: -37, y: -47}
+        - {x: -25, y: -35}
+        - {x: -25, y: -31}
+        - {x: -30, y: -26}
+      - - {x: 27, y: -26}
+        - {x: 26, y: -29}
+        - {x: 26, y: -41}
+        - {x: 31, y: -47}
+        - {x: 47, y: -47}
+        - {x: 47, y: -36}
+        - {x: 37, y: -26}
+      - - {x: 30, y: 23}
+        - {x: 16, y: 35}
+        - {x: -12, y: 35}
+        - {x: -21, y: 33}
+        - {x: -35, y: 13}
+        - {x: -35, y: -4}
+        - {x: -34, y: -10}
+        - {x: -35, y: -18}
+        - {x: -35, y: -28}
+        - {x: -17, y: -35}
+        - {x: 24, y: -35}
+        - {x: 33, y: -19}
+        - {x: 35, y: -12}
+        - {x: 35, y: 9}
+      - - {x: -60, y: 7}
+        - {x: -63, y: 6}
+        - {x: -63, y: -6}
+        - {x: -58, y: -7}
+        - {x: -40, y: -7}
+        - {x: -39, y: -3}
+        - {x: -39, y: 2}
+        - {x: -41, y: 7}
+      - - {x: 59, y: 7}
+        - {x: 41, y: 7}
+        - {x: 39, y: 2}
+        - {x: 39, y: -5}
+        - {x: 43, y: -7}
+        - {x: 59, y: -7}
+        - {x: 63, y: -3}
+        - {x: 63, y: 4}
+      - - {x: -42, y: 46}
+        - {x: -46, y: 42}
+        - {x: -46, y: 35}
+        - {x: -35, y: 25}
+        - {x: -30, y: 25}
+        - {x: -25, y: 27}
+        - {x: -25, y: 35}
+        - {x: -36, y: 46}
+      - - {x: 37, y: 46}
+        - {x: 26, y: 35}
+        - {x: 26, y: 30}
+        - {x: 29, y: 26}
+        - {x: 31, y: 25}
+        - {x: 40, y: 25}
+        - {x: 47, y: 37}
+        - {x: 47, y: 44}
+        - {x: 42, y: 46}
+      - - {x: -2, y: 63}
+        - {x: -7, y: 58}
+        - {x: -7, y: 44}
+        - {x: -5, y: 40}
+        - {x: -2, y: 39}
+        - {x: 3, y: 39}
+        - {x: 7, y: 43}
+        - {x: 7, y: 58}
+        - {x: 3, y: 63}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
