@@ -15,9 +15,12 @@ public class GameBoard : MonoBehaviour
 
     TerrainTile[,] _map = new TerrainTile[BOARD_WIDTH, BOARD_HEIGHT];
 
+    public static GameBoard Instance{ get; private set; }
+
+
     void Awake()
     {
-
+        Instance = this;
     }
 
 

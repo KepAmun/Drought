@@ -11,8 +11,8 @@ public class Tile_Water : TerrainTile
     {
         base.Awake();
 
-        Growth.MaxHealth = 10;
-        Growth.Health = 10;
+        Growth.MaxHealth = 11;
+        Growth.Health = 11;
 
         Type = TileType.Water;
         
