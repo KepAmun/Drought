@@ -27,9 +27,18 @@ public class GameBoard : MonoBehaviour
         {
             for(int x = 0; x < BOARD_WIDTH; x++)
             {
-                TerrainTile tile = MakeTile(Tile.TileType.Ground) as TerrainTile;
-                tile.Health = Random.Range(0, 8);
-                tile.CheckHealth();
+                TerrainTile tile;
+                if(Random.value > 0.9f)
+                {
+                    tile = MakeTile(Tile.TileType.Water) as TerrainTile;
+                }
+                else
+                {
+                    tile = MakeTile(Tile.TileType.Ground) as TerrainTile;
+                    tile.Health = 4 * Random.Range(0, 4);
+                    tile.CheckHealth();
+                }
+
                 tile.gameObject.SetActive(false);
 
                 Coords targetCoords = new Coords() { x = x, y = y };
@@ -88,10 +97,12 @@ public class GameBoard : MonoBehaviour
 
             if(tile is TerrainTile)
             {
+                TerrainTile terrainTile = tile as TerrainTile;
+
                 if(_map[coords.x, coords.y] != null)
                     _map[coords.x, coords.y].Remove();
 
-                _map[coords.x, coords.y] = tile as TerrainTile;
+                _map[coords.x, coords.y] = terrainTile;
                 tile.transform.SetParent(transform);
                 tile.MoveTo(CoordsToPosition(coords));
 
