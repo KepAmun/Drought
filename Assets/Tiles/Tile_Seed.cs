@@ -12,7 +12,7 @@ public class Tile_Seed : Tile
         TerrainTile targetTile = GameBoard.GetTileAt(transform.position);
         if(targetTile != null && targetTile.Type == TileType.Ground)
         {
-            Tree tree = Instantiate<GameObject>(TreePrefab).GetComponent<Tree>();
+            FoodTree tree = Instantiate<GameObject>(TreePrefab).GetComponent<FoodTree>();
             tree.transform.SetParent(targetTile.transform, false);
             targetTile.Content = tree;
 
