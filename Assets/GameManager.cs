@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     List<Tile> _hand;
     int _handLimit = 3;
     GameObject _handHost;
+    List<Tile.TileType> _tileTypeDistribution;
 
     enum GameState { Starting, Waiting, Advancing, GameOver, }
     GameState _state = GameState.Starting;
@@ -111,6 +112,17 @@ public class GameManager : MonoBehaviour
         FoodText = GameObject.Find("FoodLabel").GetComponent<Text>();
         GameOverPanel = GameObject.Find("GameOverPanel");
         GameOverPanel.SetActive(false);
+
+        _tileTypeDistribution = new List<Tile.TileType>();
+        for(int i = 0; i < 30; i++)
+        {
+            _tileTypeDistribution.Add(Tile.TileType.Ground);
+        }
+
+        for(int i = 0; i < 10; i++)
+        {
+            _tileTypeDistribution.Add(Tile.TileType.Water);
+        }
     }
 
 
@@ -194,9 +206,16 @@ public class GameManager : MonoBehaviour
     {
         Tile tile = null;
 
-        Tile.TileType tileType = (Tile.TileType)(Random.Range(0, System.Enum.GetValues(typeof(Tile.TileType)).Length));
+        Tile.TileType tileType = _tileTypeDistribution[Random.Range(0, _tileTypeDistribution.Count)];
 
         tile = _gameBoard.MakeTile(tileType);
+
+        TerrainTile terrainTile = tile as TerrainTile;
+        if(terrainTile != null && terrainTile.Type == Tile.TileType.Ground)
+        {
+            terrainTile.Health = Random.Range(0, 7);
+            terrainTile.CheckHealth();
+        }
 
         return tile;
     }

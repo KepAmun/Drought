@@ -961,10 +961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ab347af15d9e54499235595b7e8741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DesertPrefab: {fileID: 111836, guid: 74d31f4e57eb0da4996453113e820a54, type: 2}
+  GroundPrefab: {fileID: 111836, guid: 74d31f4e57eb0da4996453113e820a54, type: 2}
   WaterPrefab: {fileID: 169974, guid: b613a0352f8b339409fbf38ef386b2b7, type: 2}
-  MudPrefab: {fileID: 128096, guid: 46abe14b5fb3aee45b4ebbb109ded821, type: 2}
-  GrassPrefab: {fileID: 196076, guid: 353fef1d70d6a424c8c654e7545c3fe9, type: 2}
 --- !u!4 &1624311134
 Transform:
   m_ObjectHideFlags: 0

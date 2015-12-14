@@ -1,17 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile_Grass : Tile
+public class GroundTile : TerrainTile
 {
     protected override void Awake()
     {
         base.Awake();
 
-        Health = 2;
-
-        Type = TileType.Grass;
+        Type = TileType.Ground;
     }
-
 
     public override void Advance()
     {
@@ -24,9 +21,6 @@ public class Tile_Grass : Tile
     {
         base.CheckHealth();
 
-        if(Health <= 0)
-        {
-            ChangeTo(TileType.Mud);
-        }
+        Level = Mathf.Clamp(Health / 2, 0, 2);
     }
 }

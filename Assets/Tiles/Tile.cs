@@ -4,50 +4,29 @@ using System;
 
 public class Tile : MonoBehaviour
 {
-    public enum TileType { Desert, Grass, Mud, Water }
+    public enum TileType { Ground, Water, Seed, Sun, Fish }
     public TileType Type { get; protected set; }
 
-    public int Health { get; set; }
-
-    int _level = 0;
-    public int Level
+    public GameBoard GameBoard { get; set; }
+    Collider _collider;
+    public bool Locked
     {
         get
         {
-            return _level;
+            return !_collider.enabled;
         }
 
         set
         {
-            if(_level != value)
-            {
-                if(_level > value)
-                {
-                    // Level up tile
-                }
-                else
-                {
-                    // Level up tile
-                }
-
-                _level = value;
-            }
+            _collider.enabled = !value;
         }
     }
-
-    public GameBoard GameBoard { get; set; }
-    public bool Locked { get; set; }
 
     public event System.Action<Tile> Activated;
 
     protected virtual void Awake()
     {
-        Health = 0;
-    }
-
-
-    public virtual void Advance()
-    {
+        _collider = GetComponent<Collider>();
     }
 
 
@@ -143,23 +122,13 @@ public class Tile : MonoBehaviour
     }
 
 
-    protected void ChangeTo(Tile.TileType type)
+    protected TerrainTile ChangeTo(Tile.TileType type)
     {
-        Tile tile = GameBoard.MakeTile(type);
+        TerrainTile tile = GameBoard.MakeTile(type) as TerrainTile;
         tile.transform.position = transform.position + Vector3.down;
         GameBoard.PlaceTile(tile, this);
-    }
 
-
-    public virtual void LevelUp()
-    {
-
-    }
-
-
-    public virtual void LevelDown()
-    {
-        
+        return tile;
     }
 
 

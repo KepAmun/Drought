@@ -8,12 +8,10 @@ public class GameBoard : MonoBehaviour
     public const int BOARD_WIDTH = 6;
     public const int BOARD_HEIGHT = 6;
 
-    public GameObject DesertPrefab;
+    public GameObject GroundPrefab;
     public GameObject WaterPrefab;
-    public GameObject MudPrefab;
-    public GameObject GrassPrefab;
 
-    Tile[,] _map = new Tile[BOARD_WIDTH, BOARD_HEIGHT];
+    TerrainTile[,] _map = new TerrainTile[BOARD_WIDTH, BOARD_HEIGHT];
 
     void Awake()
     {
@@ -27,7 +25,7 @@ public class GameBoard : MonoBehaviour
         {
             for(int x = 0; x < BOARD_WIDTH; x++)
             {
-                Tile tile = MakeTile(Tile.TileType.Desert);
+                Tile tile = MakeTile(Tile.TileType.Ground);
                 tile.gameObject.SetActive(false);
 
                 Coords targetCoords = new Coords() { x = x, y = y };
@@ -82,16 +80,21 @@ public class GameBoard : MonoBehaviour
 
         if(coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT)
         {
-            if(_map[coords.x, coords.y] != null)
-                _map[coords.x, coords.y].Remove();
-
-            _map[coords.x, coords.y] = tile;
-            tile.transform.SetParent(transform);
-            tile.MoveTo(CoordsToPosition(coords));
-
-            tile.name = tile.name + "(" + coords.x + ", " + coords.y + ")";
-            tile.Locked = true;
             success = true;
+
+            if(tile is TerrainTile)
+            {
+                if(_map[coords.x, coords.y] != null)
+                    _map[coords.x, coords.y].Remove();
+
+                _map[coords.x, coords.y] = tile as TerrainTile;
+                tile.transform.SetParent(transform);
+                tile.MoveTo(CoordsToPosition(coords));
+
+                tile.name = tile.name + "(" + coords.x + ", " + coords.y + ")";
+                tile.Locked = true;
+            }
+
         }
 
         return success;
@@ -112,12 +115,12 @@ public class GameBoard : MonoBehaviour
 
     public void Advance()
     {
-        foreach(Tile tile in _map)
+        foreach(TerrainTile tile in _map)
         {
             tile.Advance();
         }
         
-        foreach(Tile tile in _map)
+        foreach(TerrainTile tile in _map)
         {
             tile.CheckHealth();
         }
@@ -132,9 +135,9 @@ public class GameBoard : MonoBehaviour
     }
 
 
-    public List<Tile> GetNeighbors(Tile tile)
+    public List<TerrainTile> GetNeighbors(Tile tile)
     {
-        List<Tile> neighbors = new List<Tile>();
+        List<TerrainTile> neighbors = new List<TerrainTile>();
 
         Coords center = PositionToCoords(tile.transform.position);
 
@@ -166,16 +169,8 @@ public class GameBoard : MonoBehaviour
 
         switch(tileType)
         {
-            case Tile.TileType.Desert:
-                tileHost = Instantiate<GameObject>(DesertPrefab);
-                break;
-
-            case Tile.TileType.Grass:
-                tileHost = Instantiate<GameObject>(GrassPrefab);
-                break;
-
-            case Tile.TileType.Mud:
-                tileHost = Instantiate<GameObject>(MudPrefab);
+            case Tile.TileType.Ground:
+                tileHost = Instantiate<GameObject>(GroundPrefab);
                 break;
 
             case Tile.TileType.Water:
@@ -197,15 +192,15 @@ public class GameBoard : MonoBehaviour
     }
 
 
-    public Tile GetTileAt(Vector3 position)
+    public TerrainTile GetTileAt(Vector3 position)
     {
         return GetTileAt(PositionToCoords(position));
     }
 
 
-    public Tile GetTileAt(Coords coords)
+    public TerrainTile GetTileAt(Coords coords)
     {
-        Tile tile = null;
+        TerrainTile tile = null;
 
         if(InRange(coords))
         {

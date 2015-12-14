@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile_Water : Tile
+public class Tile_Water : TerrainTile
 {
     protected override void Awake()
     {
@@ -9,7 +9,7 @@ public class Tile_Water : Tile
 
         Type = TileType.Water;
 
-        Health = 16;
+        Health = 32;
     }
 
 
@@ -17,14 +17,14 @@ public class Tile_Water : Tile
     {
         base.Advance();
 
-        List<Tile> neighbors = GameBoard.GetNeighbors(this);
+        List<TerrainTile> neighbors = GameBoard.GetNeighbors(this);
 
         for(int i = 0; i < neighbors.Count; i++)
         {
-            if(neighbors[i].Type == TileType.Desert || neighbors[i].Type == TileType.Mud)
+            if(neighbors[i].Type == TileType.Ground)
             {
-                neighbors[i].Health++;
-                Health--;
+                neighbors[i].Health += 2;
+                Health -= 2;
             }
         }
     }
@@ -50,7 +50,9 @@ public class Tile_Water : Tile
 
         if(Health < 0)
         {
-            ChangeTo(TileType.Grass);
+            TerrainTile tile = ChangeTo(TileType.Ground);
+            tile.Health = 6;
+            tile.CheckHealth();
         }
     }
 }
