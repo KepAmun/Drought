@@ -208,11 +208,11 @@ public class GameManager : MonoBehaviour
                 break;
 
             case 2:
-                Food += 4;
+                Food += 3;
                 break;
 
             case 3:
-                Food += 7;
+                Food += 5;
                 break;
 
             default:
