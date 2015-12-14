@@ -123,13 +123,13 @@ public class GameBoard : MonoBehaviour
     }
 
 
-    Vector3 CoordsToPosition(Coords coords)
+    public Vector3 CoordsToPosition(Coords coords)
     {
         return new Vector3(coords.x - 2.5f, 0, coords.y - 2.5f);
     }
 
 
-    Coords PositionToCoords(Vector3 position)
+    public Coords PositionToCoords(Vector3 position)
     {
         return new Coords { x = Mathf.RoundToInt(position.x + 2.5f), y = Mathf.RoundToInt(position.z + 2.5f) };
     }
@@ -240,7 +240,7 @@ public class GameBoard : MonoBehaviour
     }
 
 
-    bool InRange(Coords coords)
+    public bool InRange(Coords coords)
     {
         return (coords.x >= 0 && coords.x < BOARD_WIDTH && coords.y >= 0 && coords.y < BOARD_HEIGHT);
     }

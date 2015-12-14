@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public class Tile : MonoBehaviour
 {
@@ -24,16 +25,32 @@ public class Tile : MonoBehaviour
     public event System.Action<Tile> Activated;
 
     AudioSource _audio;
+    Light _light;
+    public bool LightOn
+    {
+        get
+        {
+            return _light.enabled;
+        }
+
+        set
+        {
+            _light.enabled = value;
+        }
+    }
 
     protected virtual void Awake()
     {
         _collider = GetComponent<Collider>();
         _audio = GetComponent<AudioSource>();
+        _light = GetComponentInChildren<Light>();
+        LightOn = false;
     }
 
 
     void OnMouseDown()
     {
+        LightOn = false;
         StopAllCoroutines();
         StartCoroutine(DoDrag());
     }
@@ -46,6 +63,9 @@ public class Tile : MonoBehaviour
         Vector3 startingPos = transform.position;
 
         //StopCoroutine("DoMoveTo");
+
+        GameBoard.Coords prevTargetCoords = new GameBoard.Coords() { x = -1, y = -1 };
+        List<TerrainTile> targetTiles = new List<TerrainTile>();
 
         while(dragging)
         {
@@ -62,14 +82,38 @@ public class Tile : MonoBehaviour
                 {
                     transform.position = hitInfo.point + (Vector3.up * 0.8f);
                 }
+                
+                GameBoard.Coords targetCoords = GameBoard.PositionToCoords(transform.position);
+                if(targetCoords.x != prevTargetCoords.x || targetCoords.y != prevTargetCoords.y)
+                {
+                    foreach(var tile in targetTiles)
+                    {
+                        tile.LightOn = false;
+                    }
+
+                    targetTiles = GetTargets(targetCoords);
+
+                    foreach(var tile in targetTiles)
+                    {
+                        tile.LightOn = true;
+                    }
+
+                    prevTargetCoords = targetCoords;
+                }
 
             }
 
             yield return null;
         }
 
+        foreach(var tile in targetTiles)
+        {
+            tile.LightOn = false;
+        }
+
         if(!Activate())
         {
+            LightOn = true;
             MoveTo(startingPos);
         }
         else if(_audio != null)
@@ -134,9 +178,25 @@ public class Tile : MonoBehaviour
         Vector3 targetPosition = transform.position;
         targetPosition.y = -1;
 
+        LightOn = false;
+
         MoveTo(targetPosition);
 
         Destroy(gameObject, 2);
     }
-    
+
+
+    protected virtual List<TerrainTile> GetTargets(GameBoard.Coords targetCoords)
+    {
+        List<TerrainTile> targetTiles = new List<TerrainTile>();
+
+        TerrainTile targetTile = GameBoard.Instance.GetTileAt(targetCoords);
+
+        if(targetTile != null)
+        {
+            targetTiles.Add(targetTile);
+        }
+
+        return targetTiles;
+    }
 }

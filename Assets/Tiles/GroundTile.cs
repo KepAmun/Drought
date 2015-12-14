@@ -13,7 +13,7 @@ public class GroundTile : TerrainTile
 
         Type = TileType.Ground;
 
-        int maxLevel = transform.childCount;
+        int maxLevel = 3;
         _levelModels = new GameObject[maxLevel];
         for(int i = 0; i < maxLevel; i++)
         {

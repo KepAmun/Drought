@@ -38,4 +38,19 @@ public class Tile_Sun : Tile
         return success;
     }
 
+
+    protected override List<TerrainTile> GetTargets(GameBoard.Coords targetCoords)
+    {
+        List<TerrainTile> targetTiles = new List<TerrainTile>();
+        
+        TerrainTile targetTile = GameBoard.Instance.GetTileAt(targetCoords);
+
+        if(targetTile != null)
+        {
+            targetTiles.AddRange(GameBoard.GetNeighbors(this));
+            targetTiles.Add(targetTile);
+        }
+
+        return targetTiles;
+    }
 }
