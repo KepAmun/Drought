@@ -196,7 +196,31 @@ public class GameManager : MonoBehaviour
 
     private void OnTileContentHarvested(TileContent tileContent)
     {
-        Food += tileContent.Health;
+
+        switch(tileContent.Growth.Level)
+        {
+            case 0:
+                Food += 1;
+                break;
+
+            case 1:
+                Food += 2;
+                break;
+
+            case 2:
+                Food += 4;
+                break;
+
+            case 3:
+                Food += 7;
+                break;
+
+            default:
+                break;
+        }
+        
+        tileContent.Growth.Level = 0;
+        
     }
 
 
@@ -270,7 +294,7 @@ public class GameManager : MonoBehaviour
         TerrainTile terrainTile = tile as TerrainTile;
         if(terrainTile != null && terrainTile.Type == Tile.TileType.Ground)
         {
-            terrainTile.Health = Random.Range(0, 7);
+            terrainTile.Growth.Level = Random.Range(0, 3);
             terrainTile.CheckHealth();
         }
 

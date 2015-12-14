@@ -3,30 +3,8 @@ using System.Collections;
 
 public class TerrainTile : Tile
 {
-
-    public int Health { get; set; }
-
-    int _level = 0;
-    GameObject[] _levelModels;
-    public int Level
-    {
-        get
-        {
-            return _level;
-        }
-
-        set
-        {
-            if(_level != value)
-            {
-                _levelModels[_level].SetActive(false);
-                _level = value;
-                _levelModels[_level].SetActive(true);
-            }
-        }
-    }
-
-
+    public GrowthHandler Growth { get; set; }
+    
     TileContent _content;
     public TileContent Content
     {
@@ -37,6 +15,11 @@ public class TerrainTile : Tile
 
         set
         {
+            if(value == null && _content != null)
+            {
+                _content.ContainingTile = null;
+            }
+
             _content = value;
 
             if(_content != null)
@@ -51,26 +34,18 @@ public class TerrainTile : Tile
     {
         base.Awake();
 
-        Health = 0;
-        Level = 0;
-
-        int MaxLevel = transform.childCount;
-        _levelModels = new GameObject[MaxLevel];
-        for(int i = 0; i < MaxLevel; i++)
-        {
-            _levelModels[i] = transform.GetChild(i).gameObject;
-            _levelModels[i].SetActive(false);
-        }
-
-        _levelModels[0].SetActive(true);
-
+        Growth = GetComponent<GrowthHandler>();
     }
 
-    
+
+    protected virtual void Start()
+    {
+        CheckHealth();
+    }
+
+
     public virtual void Advance()
     {
-        Health--;
-
         if(Content != null)
         {
             Content.Advance();

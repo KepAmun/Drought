@@ -26,6 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 474628}
   - 114: {fileID: 11464582}
+  - 114: {fileID: 11412638}
   - 65: {fileID: 6518442}
   - 95: {fileID: 9571702}
   m_Layer: 0
@@ -252,6 +253,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11412638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9411aebb6375bda408d65163e1d04e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11464582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -277,6 +289,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MaxHealth
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

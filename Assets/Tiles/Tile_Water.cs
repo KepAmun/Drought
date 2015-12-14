@@ -3,13 +3,30 @@ using System.Collections.Generic;
 
 public class Tile_Water : TerrainTile
 {
+    Material _waterMaterial;
+    Color _waterFullColor;
+    Color _waterEmptyColor;
+
     protected override void Awake()
     {
         base.Awake();
 
-        Type = TileType.Water;
+        Growth.MaxHealth = 10;
+        Growth.Health = 10;
 
-        Health = 100;
+        Type = TileType.Water;
+        
+        MeshRenderer renderer = transform.GetChild(0).GetComponent<MeshRenderer>();
+        
+        _waterMaterial = renderer.materials[1];
+        _waterFullColor = _waterMaterial.color;
+        _waterEmptyColor = renderer.materials[0].color;
+    }
+
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
 
@@ -18,7 +35,7 @@ public class Tile_Water : TerrainTile
         bool success = false;
 
         Tile targetTile = GameBoard.GetTileAt(transform.position);
-        if(targetTile != null && targetTile.Type != TileType.Water)
+        if(targetTile != null)
         {
             success = base.Activate();
         }
@@ -27,15 +44,34 @@ public class Tile_Water : TerrainTile
     }
 
 
+    public override void Advance()
+    {
+        base.Advance();
+
+        Growth.Health--;
+    }
+
+
     public override void CheckHealth()
     {
         base.CheckHealth();
 
-        if(Health < 0)
+        if(Growth.Health <= 0)
         {
             TerrainTile tile = ChangeTo(TileType.Ground);
-            tile.Health = 6;
+            tile.Growth.Level = 2;
             tile.CheckHealth();
         }
+        else
+        {
+            UpdateWaterColor();
+        }
+
+    }
+
+
+    void UpdateWaterColor()
+    {
+        _waterMaterial.color = Color.Lerp(_waterEmptyColor, _waterFullColor, Growth.Health / (float)Growth.MaxHealth);
     }
 }

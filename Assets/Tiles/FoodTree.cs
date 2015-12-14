@@ -4,40 +4,29 @@ using System.Collections;
 
 public class FoodTree : TileContent
 {
-    public override int Level
+    GameObject[] _levelMeshes;
+
+    protected override void Awake()
     {
-        get
-        {
-            return Mathf.Clamp(Health / 16, 0, 3);
-        }
+        base.Awake();
 
-        set
-        {
-            Health = Mathf.Clamp((16 * value) + 15, 0, MaxHealth);
-            CheckHealth();
-        }
-    }
-
-    GameObject[] _leaves;
-
-    void Awake()
-    {
-        MaxHealth = 63;
-        
+        Growth.MaxHealth = 11;
+        Growth.Level = 0;
 
         transform.Rotate(Vector3.up, Random.Range(0, 360.0f));
-        _leaves = new GameObject[3];
+        _levelMeshes = new GameObject[transform.childCount];
 
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < transform.childCount; i++)
         {
-            _leaves[i] = transform.GetChild(i).gameObject;
+            _levelMeshes[i] = transform.GetChild(i).gameObject;
         }
+
     }
 
 
-    void Start()
+    protected override void Start()
     {
-        CheckHealth();
+        base.Start();
     }
 
 
@@ -45,14 +34,12 @@ public class FoodTree : TileContent
     {
         base.Advance();
 
-        Health--;
-
-        if(ContainingTile.Type == Tile.TileType.Ground && ContainingTile.Health > 0)
+        if(ContainingTile.Type == Tile.TileType.Ground)
         {
-            int healthDrain = Mathf.Min(4, ContainingTile.Health, MaxHealth - Health);
-
-            ContainingTile.Health -= healthDrain;
-            Health += healthDrain;
+            // Trees on desert lose 1 health.
+            // Trees on mud stay the same.
+            // Trees on grass gain 1 health.
+            Growth.Health += ContainingTile.Growth.Level - 1;
         }
     }
 
@@ -61,11 +48,23 @@ public class FoodTree : TileContent
     {
         base.CheckHealth();
 
-        int level = Mathf.Clamp(Health / 16, 0, 4);
-
-        for(int i = 0; i < 3; i++)
+        if(Growth.Health <= 0)
         {
-            _leaves[i].SetActive(i + 1 <= level);
+            Destroy(gameObject);
+        }
+        else
+        {
+            RefreshLeaves();
+        }
+
+    }
+
+
+    void RefreshLeaves()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            _levelMeshes[i].SetActive(i <= Growth.Level);
         }
     }
 }

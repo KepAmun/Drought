@@ -26,6 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 481834}
   - 114: {fileID: 11480036}
+  - 114: {fileID: 11400628}
   - 65: {fileID: 6518992}
   - 95: {fileID: 9534004}
   m_Layer: 0
@@ -124,6 +125,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11400628
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 169974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9411aebb6375bda408d65163e1d04e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11480036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,7 +153,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Name
+      value: Water
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 169974}

@@ -4,10 +4,20 @@ using System.Collections;
 public abstract class TileContent : MonoBehaviour
 {
     public TerrainTile ContainingTile { get; set; }
+    public GrowthHandler Growth;
 
-    public int Health { get; set; }
-    public int MaxHealth { get; protected set; }
-    public abstract int Level { get; set; }
+
+    protected virtual void Awake()
+    {
+        Growth = GetComponent<GrowthHandler>();
+    }
+
+
+    protected virtual void Start()
+    {
+        CheckHealth();
+    }
+
 
     public virtual void Advance()
     {

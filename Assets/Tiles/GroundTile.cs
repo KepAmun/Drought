@@ -3,12 +3,31 @@ using System.Collections.Generic;
 
 public class GroundTile : TerrainTile
 {
+    GameObject[] _levelModels;
+
     protected override void Awake()
     {
         base.Awake();
+        
+        Growth.MaxHealth = 8;
 
         Type = TileType.Ground;
+
+        int maxLevel = transform.childCount;
+        _levelModels = new GameObject[maxLevel];
+        for(int i = 0; i < maxLevel; i++)
+        {
+            _levelModels[i] = transform.GetChild(i).gameObject;
+            _levelModels[i].SetActive(false);
+        }
     }
+
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
 
     public override void Advance()
     {
@@ -16,22 +35,36 @@ public class GroundTile : TerrainTile
 
         List<TerrainTile> neighbors = GameBoard.GetNeighbors(this);
 
+        bool waterFound = false;
+
         for(int i = 0; i < neighbors.Count; i++)
         {
-            if(neighbors[i].Type == TileType.Water && neighbors[i].Health > Health)
+            if(neighbors[i].Type == TileType.Water)
             {
-                int healthDrain = Mathf.Min(neighbors[i].Health, 4);
+                waterFound = true;
 
-                neighbors[i].Health -= healthDrain;
-                Health += healthDrain;
+                break;
             }
         }
+        
+        if(waterFound)
+        {
+            Growth.Health++;
+        }
+        else
+        {
+            Growth.Health--;
+        }
     }
+
 
     public override void CheckHealth()
     {
         base.CheckHealth();
 
-        Level = Mathf.Clamp(Health / 2, 0, 2);
+        for(int i = 0; i < _levelModels.Length; i++)
+        {
+            _levelModels[i].SetActive(i == Growth.Level);
+        }
     }
 }
