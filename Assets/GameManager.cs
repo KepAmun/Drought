@@ -52,13 +52,15 @@ public class GameManager : MonoBehaviour
             {
                 _turnNumber = value;
 
-                TimeText.text = _turnNumber.ToString();
+                _timeText.text = _turnNumber.ToString();
             }
         }
     }
 
-    Text TimeText;
-    GameObject GameOverPanel;
+    Text _timeText;
+    GameObject _hudPanel;
+    GameObject _gameOverPanel;
+    Text _daysSurvivedText;
 
     // Hand of tiles
     List<Tile> _hand;
@@ -95,7 +97,8 @@ public class GameManager : MonoBehaviour
                     case GameState.Advancing:
                         break;
                     case GameState.GameOver:
-                        GameOverPanel.SetActive(false);
+                        _gameOverPanel.SetActive(false);
+                        _hudPanel.SetActive(true);
                         break;
                     default:
                         break;
@@ -119,7 +122,9 @@ public class GameManager : MonoBehaviour
                     case GameState.Advancing:
                         break;
                     case GameState.GameOver:
-                        GameOverPanel.SetActive(true);
+                        _gameOverPanel.SetActive(true);
+                        _hudPanel.SetActive(false);
+                        _daysSurvivedText.text = _turnNumber.ToString();
                         ClearHand();
                         break;
                     default:
@@ -142,10 +147,12 @@ public class GameManager : MonoBehaviour
         _hand = new List<Tile>();
 
         FoodText = GameObject.Find("FoodLabel").GetComponent<Text>();
-        TimeText = GameObject.Find("TimeLabel").GetComponent<Text>();
+        _timeText = GameObject.Find("TimeLabel").GetComponent<Text>();
         TurnNumber = 0;
-        GameOverPanel = GameObject.Find("GameOverPanel");
-        GameOverPanel.SetActive(false);
+        _gameOverPanel = GameObject.Find("GameOverPanel");
+        _hudPanel = GameObject.Find("HUD");
+        _daysSurvivedText = GameObject.Find("DaysSurvived").GetComponent<Text>();
+        _gameOverPanel.SetActive(false);
 
         _tileTypeDistribution = new List<Tile.TileType>();
         for(int i = 0; i < 30; i++)
@@ -173,6 +180,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Food = 20;
+        TurnNumber = 0;
 
         ResetHand();
 
