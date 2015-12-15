@@ -207,6 +207,15 @@ public class GameManager : MonoBehaviour
     }
 
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
+
     public void OnHandTileActivated(Tile tile)
     {
         tile.Activated -= OnHandTileActivated;
