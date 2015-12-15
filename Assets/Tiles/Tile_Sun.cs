@@ -8,7 +8,7 @@ public class Tile_Sun : Tile
         bool success = false;
 
         TerrainTile targetTile = GameBoard.GetTileAt(transform.position);
-        if(targetTile != null && targetTile.Type == TileType.Ground)
+        if(targetTile != null)
         {
             targetTile.GameBoard.GetNeighbors(targetTile);
 

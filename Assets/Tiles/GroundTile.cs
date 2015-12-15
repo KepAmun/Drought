@@ -31,8 +31,6 @@ public class GroundTile : TerrainTile
 
     public override void Advance()
     {
-        base.Advance();
-
         List<TerrainTile> neighbors = GameBoard.GetNeighbors(this);
 
         bool waterFound = false;
@@ -55,6 +53,8 @@ public class GroundTile : TerrainTile
         {
             Growth.Health--;
         }
+
+        base.Advance();
     }
 
 

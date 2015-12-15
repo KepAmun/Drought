@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
             _tileDistribution.Add(Tile.TileType.Seed);
         }
 
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < 2; i++)
         {
             _tileDistribution.Add(Tile.TileType.Sun);
         }
@@ -277,9 +277,8 @@ public class GameManager : MonoBehaviour
             _inDrought = true;
             _nextDroughtStart += _yearDuration;
             _nextDroughtEnd = _turnNumber + _droughtDuration;
-            _droughtDuration++;
+            _droughtDuration += 2;
             _bgMat.color = _droughtColor;
-            //.color;
         }
         else if(_turnNumber >= _nextDroughtEnd)
         {

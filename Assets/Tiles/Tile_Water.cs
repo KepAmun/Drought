@@ -20,7 +20,7 @@ public class Tile_Water : TerrainTile
         
         _waterMaterial = renderer.materials[1];
         _waterFullColor = _waterMaterial.color;
-        _waterEmptyColor = renderer.materials[0].color;
+        _waterEmptyColor = Color.Lerp(_waterFullColor, renderer.materials[0].color, 0.7f);
     }
 
 

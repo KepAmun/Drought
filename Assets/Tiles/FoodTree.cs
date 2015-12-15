@@ -48,7 +48,7 @@ public class FoodTree : TileContent
     {
         base.CheckHealth();
 
-        if(Growth.Health <= 0)
+        if(Growth.Health < 0)
         {
             Destroy(gameObject);
         }

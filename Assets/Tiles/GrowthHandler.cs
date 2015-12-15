@@ -15,7 +15,7 @@ public class GrowthHandler : MonoBehaviour
         {
             if(_health != value)
             {
-                _health = Mathf.Clamp(value, 0, MaxHealth);
+                _health = Mathf.Min(value, MaxHealth);
             }
         }
     }
