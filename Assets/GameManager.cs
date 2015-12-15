@@ -66,7 +66,16 @@ public class GameManager : MonoBehaviour
     List<Tile> _hand;
     int _handLimit = 3;
     GameObject _handHost;
-    List<Tile.TileType> _tileTypeDistribution;
+    List<Tile.TileType> _tileDistribution;
+    List<Tile.TileType> _droughtDistribution;
+    int _droughtDuration;
+    int _nextDroughtStart;
+    int _nextDroughtEnd;
+    bool _inDrought;
+    int _yearDuration = 30;
+    Material _bgMat;
+    Color _bgColor;
+    Color _droughtColor;
 
     enum GameState { Starting, Waiting, Advancing, GameOver, }
     GameState _state = GameState.Starting;
@@ -154,26 +163,32 @@ public class GameManager : MonoBehaviour
         _daysSurvivedText = GameObject.Find("DaysSurvived").GetComponent<Text>();
         _gameOverPanel.SetActive(false);
 
-        _tileTypeDistribution = new List<Tile.TileType>();
+        _tileDistribution = new List<Tile.TileType>();
         for(int i = 0; i < 30; i++)
         {
-            _tileTypeDistribution.Add(Tile.TileType.Ground);
+            _tileDistribution.Add(Tile.TileType.Ground);
         }
 
         for(int i = 0; i < 10; i++)
         {
-            _tileTypeDistribution.Add(Tile.TileType.Water);
-        }
-
-        for(int i = 0; i < 10; i++)
-        {
-            _tileTypeDistribution.Add(Tile.TileType.Seed);
+            _tileDistribution.Add(Tile.TileType.Seed);
         }
 
         for(int i = 0; i < 4; i++)
         {
-            _tileTypeDistribution.Add(Tile.TileType.Sun);
+            _tileDistribution.Add(Tile.TileType.Sun);
         }
+
+        _droughtDistribution = new List<Tile.TileType>(_tileDistribution);
+
+        for(int i = 0; i < 10; i++)
+        {
+            _tileDistribution.Add(Tile.TileType.Water);
+        }
+
+        _bgMat = GameObject.Find("BackgroundBorder").transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        _bgColor = _bgMat.color;
+        _droughtColor = new Color(0.59f, 0.37f, 0);
     }
 
 
@@ -181,6 +196,10 @@ public class GameManager : MonoBehaviour
     {
         Food = 20;
         TurnNumber = 0;
+
+        _inDrought = false;
+        _nextDroughtStart = 5;
+        _droughtDuration = 3;
 
         ResetHand();
 
@@ -244,6 +263,21 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.4f);
         
+        if(_turnNumber >= _nextDroughtStart)
+        {
+            _inDrought = true;
+            _nextDroughtStart += _yearDuration;
+            _nextDroughtEnd = _turnNumber + _droughtDuration;
+            _droughtDuration++;
+            _bgMat.color = _droughtColor;
+            //.color;
+        }
+        else if(_turnNumber >= _nextDroughtEnd)
+        {
+            _inDrought = false;
+            _bgMat.color = _bgColor;
+        }
+
         _gameBoard.Advance();
 
         yield return new WaitForSeconds(0.4f);
@@ -294,8 +328,19 @@ public class GameManager : MonoBehaviour
     Tile RandomTile()
     {
         Tile tile = null;
+        
+        List<Tile.TileType> distribution;
 
-        Tile.TileType tileType = _tileTypeDistribution[Random.Range(0, _tileTypeDistribution.Count)];
+        if(!_inDrought)
+        {
+            distribution = _tileDistribution;
+        }
+        else
+        {
+            distribution = _droughtDistribution;
+        }
+
+        Tile.TileType tileType = distribution[Random.Range(0, distribution.Count)];
 
         tile = _gameBoard.MakeTile(tileType);
 
