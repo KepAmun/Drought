@@ -8,7 +8,7 @@ public class GroundTile : TerrainTile
     protected override void Awake()
     {
         base.Awake();
-        
+
         Growth.MaxHealth = 8;
 
         Type = TileType.Ground;
@@ -44,14 +44,14 @@ public class GroundTile : TerrainTile
                 break;
             }
         }
-        
+
         if(waterFound)
         {
             Growth.Health++;
         }
         else
         {
-            Growth.Health--;
+            Growth.Health = Mathf.Max(Growth.Health - 1, 0);
         }
 
         base.Advance();
