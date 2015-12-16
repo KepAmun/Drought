@@ -39,6 +39,10 @@ public class Tile : MonoBehaviour
         }
     }
 
+
+    Coroutine _moveToCoroutine;
+
+
     protected virtual void Awake()
     {
         _collider = GetComponent<Collider>();
@@ -80,7 +84,7 @@ public class Tile : MonoBehaviour
 
                 if(Physics.Raycast(mouseRay, out hitInfo, 1000, LayerMask.GetMask("GameBoard")))
                 {
-                    transform.position = hitInfo.point + (Vector3.up * 0.8f);
+                    MoveTo(hitInfo.point + (Vector3.up * 0.85f));
                 }
                 
                 GameBoard.Coords targetCoords = GameBoard.PositionToCoords(transform.position);
@@ -141,8 +145,12 @@ public class Tile : MonoBehaviour
 
     public void MoveTo(Vector3 targetPosition, float delay = 0)
     {
-        StopAllCoroutines();
-        StartCoroutine(DoMoveTo(targetPosition, delay));
+        if(_moveToCoroutine != null)
+        {
+            StopCoroutine(_moveToCoroutine);
+        }
+
+        _moveToCoroutine = StartCoroutine(DoMoveTo(targetPosition, delay));
     }
 
 

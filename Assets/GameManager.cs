@@ -197,9 +197,11 @@ public class GameManager : MonoBehaviour
         Food = 20;
         TurnNumber = 0;
 
-        _inDrought = false;
-        _nextDroughtStart = 5;
         _droughtDuration = 3;
+        _nextDroughtStart = 5;
+        _nextDroughtEnd = 0;
+        _inDrought = false;
+        _bgMat.color = _bgColor;
 
         ResetHand();
 
